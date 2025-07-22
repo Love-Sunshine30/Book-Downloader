@@ -1,0 +1,16 @@
+body {
+    background-color: #f8f9fa;
+}
+
+#booksContainer {
+    margin-top: 2rem;
+}
+
+.book-card {
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+}
+.book-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    background: #f1f3f5;
+} 
