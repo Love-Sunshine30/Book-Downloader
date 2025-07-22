@@ -19,7 +19,7 @@ type Book struct {
 var SemesterBooks map[string][]Book
 
 func loadBooks() error {
-	f, err := os.Open("data/books.json")
+	f, err := os.Open("backend/data/books.json")
 	if err != nil {
 		return err
 	}
