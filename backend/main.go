@@ -19,6 +19,7 @@ type Book struct {
 var SemesterBooks map[string][]Book
 
 func loadBooks() error {
+	// Correct path for Render (relative to project root)
 	f, err := os.Open("backend/data/books.json")
 	if err != nil {
 		return err
@@ -30,10 +31,10 @@ func loadBooks() error {
 func main() {
 	r := gin.Default()
 
-	// Serve static frontend
-	r.Static("/static", "../frontend")
+	// Correct paths for serving static files from the project root
+	r.Static("/static", "frontend")
 	r.GET("/", func(c *gin.Context) {
-		c.File("../frontend/index.html")
+		c.File("frontend/index.html")
 	})
 
 	// API group
@@ -58,11 +59,12 @@ func main() {
 		})
 	}
 
-	// Download endpoint
+	// Download endpoint with corrected path
 	r.GET("/download/:semester/:filename", func(c *gin.Context) {
 		semester := c.Param("semester")
 		filename := c.Param("filename")
-		filePath := filepath.Join("books", semester, filename)
+		// Correct path for Render (relative to project root)
+		filePath := filepath.Join("backend/books", semester, filename)
 		c.FileAttachment(filePath, filename)
 	})
 
@@ -71,5 +73,10 @@ func main() {
 		panic("Failed to load books.json: " + err.Error())
 	}
 
-	r.Run(":8080")
+	// Use PORT environment variable for Render, with a fallback for local dev
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port)
 }
